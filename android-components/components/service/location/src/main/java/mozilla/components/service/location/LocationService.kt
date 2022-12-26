@@ -53,5 +53,10 @@ interface LocationService {
             override suspend fun fetchRegion(readFromCache: Boolean): Region? = Region("XX", "None")
             override fun hasRegionCached(): Boolean = true
         }
+
+        fun defaultChina() = object : LocationService {
+            override suspend fun fetchRegion(readFromCache: Boolean): Region? = Region("CN", "None")
+            override fun hasRegionCached(): Boolean = true
+        }
     }
 }
