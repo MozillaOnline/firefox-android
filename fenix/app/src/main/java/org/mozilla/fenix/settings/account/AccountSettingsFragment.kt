@@ -4,18 +4,25 @@
 
 package org.mozilla.fenix.settings.account
 
+import android.Manifest
 import android.app.KeyguardManager
 import android.content.Context
 import android.content.DialogInterface
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Build.VERSION.SDK_INT
 import android.os.Bundle
 import android.provider.Settings
 import android.text.InputFilter
 import android.text.format.DateUtils
 import android.view.View
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import androidx.paging.Config
 import androidx.preference.CheckBoxPreference
 import androidx.preference.EditTextPreference
 import androidx.preference.Preference
@@ -26,6 +33,8 @@ import kotlinx.coroutines.launch
 import mozilla.components.concept.sync.AccountObserver
 import mozilla.components.concept.sync.ConstellationState
 import mozilla.components.concept.sync.DeviceConstellationObserver
+import mozilla.components.feature.downloads.manager.DownloadManager
+import mozilla.components.feature.downloads.manager.validatePermissionGranted
 import mozilla.components.lib.state.ext.consumeFrom
 import mozilla.components.service.fxa.SyncEngine
 import mozilla.components.service.fxa.manager.FxaAccountManager
@@ -33,8 +42,11 @@ import mozilla.components.service.fxa.manager.SyncEnginesStorage
 import mozilla.components.service.fxa.sync.SyncReason
 import mozilla.components.service.fxa.sync.SyncStatusObserver
 import mozilla.components.service.fxa.sync.getLastSynced
+import mozilla.components.support.base.log.Log
 import mozilla.components.support.ktx.android.content.getColorFromAttr
+import mozilla.components.support.ktx.android.content.isPermissionGranted
 import mozilla.telemetry.glean.private.NoExtras
+import org.mozilla.fenix.ext.nav
 import org.mozilla.fenix.FeatureFlags
 import org.mozilla.fenix.GleanMetrics.SyncAccount
 import org.mozilla.fenix.R
@@ -126,6 +138,11 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         // Sign out
         val preferenceSignOut = requirePreference<Preference>(R.string.pref_key_sign_out)
         preferenceSignOut.onPreferenceClickListener = getClickListenerForSignOut()
+
+        // Export bookmarks
+        val preferenceExportBookmarks = requirePreference<Preference>(R.string.pref_key_export_bookmarks)
+        preferenceExportBookmarks.isVisible = org.mozilla.fenix.Config.channel.isMozillaOnline
+        preferenceExportBookmarks.onPreferenceClickListener = getClickListenerForExportBookmarks()
 
         // Sync now
         val preferenceSyncNow = requirePreference<Preference>(R.string.pref_key_sync_now)
@@ -367,6 +384,30 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
             true
         }
     }
+
+    val permissions
+        get() = if (getSDKVersion() >= Build.VERSION_CODES.Q) {
+            arrayOf()
+        } else {
+            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        }
+
+    private fun getClickListenerForExportBookmarks(): Preference.OnPreferenceClickListener {
+        return Preference.OnPreferenceClickListener {
+            validatePermissionGranted(requireContext())
+            findNavController().nav(R.id.accountSettingsFragment, AccountSettingsFragmentDirections.actionGlobalBookmarkFragment("export"))
+
+            true
+        }
+    }
+
+    fun validatePermissionGranted(context: Context) {
+        if (!context.isPermissionGranted(permissions.asIterable())) {
+            throw SecurityException("You must be granted ${permissions.joinToString()}")
+        }
+    }
+
+    fun getSDKVersion() = SDK_INT
 
     private fun getClickListenerForSyncNow(): Preference.OnPreferenceClickListener {
         return Preference.OnPreferenceClickListener {
