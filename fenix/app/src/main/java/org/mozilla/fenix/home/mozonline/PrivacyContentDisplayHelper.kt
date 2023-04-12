@@ -25,13 +25,13 @@ fun showPrivacyPopWindow(context: Context, activity: Activity) {
 
     // Use hyperlinks to display details about privacy
     val messageClickable1 = context.getString(R.string.privacy_notice_clickable1)
-    val messageClickable2 = context.getString(R.string.privacy_notice_clickable2)
-    val messageClickable3 = context.getString(R.string.privacy_notice_clickable3)
+    // val messageClickable2 = context.getString(R.string.privacy_notice_clickable2)
+    // val messageClickable3 = context.getString(R.string.privacy_notice_clickable3)
     val messageSpannable = SpannableString(content)
 
     val clickableSpan1 = PrivacyContentSpan(Position.POS1, context)
-    val clickableSpan2 = PrivacyContentSpan(Position.POS2, context)
-    val clickableSpan3 = PrivacyContentSpan(Position.POS3, context)
+    // val clickableSpan2 = PrivacyContentSpan(Position.POS2, context)
+    // val clickableSpan3 = PrivacyContentSpan(Position.POS3, context)
 
     messageSpannable.setSpan(
         clickableSpan1,
@@ -39,7 +39,7 @@ fun showPrivacyPopWindow(context: Context, activity: Activity) {
         content.indexOf(messageClickable1) + messageClickable1.length,
         Spanned.SPAN_INCLUSIVE_INCLUSIVE,
     )
-    messageSpannable.setSpan(
+    /*messageSpannable.setSpan(
         clickableSpan2,
         content.indexOf(messageClickable2),
         content.indexOf(messageClickable2) + messageClickable2.length,
@@ -50,7 +50,7 @@ fun showPrivacyPopWindow(context: Context, activity: Activity) {
         content.indexOf(messageClickable3),
         content.indexOf(messageClickable3) + messageClickable3.length,
         Spanned.SPAN_INCLUSIVE_INCLUSIVE,
-    )
+    )*/
 
     // Users can only use fenix after they agree with the privacy notice
     val builder = AlertDialog.Builder(activity)
