@@ -139,7 +139,7 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         val preferenceSignOut = requirePreference<Preference>(R.string.pref_key_sign_out)
         preferenceSignOut.onPreferenceClickListener = getClickListenerForSignOut()
 
-        // Export bookmarks
+        // Export
         val preferenceExportBookmarks = requirePreference<Preference>(R.string.pref_key_export_bookmarks)
         preferenceExportBookmarks.isVisible = org.mozilla.fenix.Config.channel.isMozillaOnline
         preferenceExportBookmarks.onPreferenceClickListener = getClickListenerForExportBookmarks()
@@ -393,9 +393,14 @@ class AccountSettingsFragment : PreferenceFragmentCompat() {
         }
 
     private fun getClickListenerForExportBookmarks(): Preference.OnPreferenceClickListener {
+        val email = accountManager.accountProfile()?.email
+        val displayName = accountManager.accountProfile()?.displayName
+        val avatar = accountManager.accountProfile()?.avatar?.url
+        val device = requireComponents.backgroundServices.defaultDeviceName(requireContext())
+        val extraInfo = "export|email:$email|displayName:$displayName|avatar:$avatar|device:$device"
         return Preference.OnPreferenceClickListener {
             validatePermissionGranted(requireContext())
-            findNavController().nav(R.id.accountSettingsFragment, AccountSettingsFragmentDirections.actionGlobalBookmarkFragment("export"))
+            findNavController().nav(R.id.accountSettingsFragment, AccountSettingsFragmentDirections.actionGlobalBookmarkFragment(extraInfo))
 
             true
         }

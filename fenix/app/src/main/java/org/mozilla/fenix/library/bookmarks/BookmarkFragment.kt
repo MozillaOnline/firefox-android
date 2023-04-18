@@ -129,7 +129,7 @@ class BookmarkFragment : LibraryPageFragment<BookmarkNode>(), UserInteractionHan
         }
     }
 
-    private suspend fun exportBookmarksToFile() {
+    private suspend fun exportBookmarksToFile(info: List<String>?) {
         withContext(IO) {
             // val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS)
             val path = requireContext().getExternalFilesDir(Environment.DIRECTORY_DOCUMENTS)
@@ -145,12 +145,17 @@ class BookmarkFragment : LibraryPageFragment<BookmarkNode>(), UserInteractionHan
             recurse(bookmarkTrees, allNodes)
             if(bookmarkTrees?.children?.isNotEmpty() == true && allNodes.isEmpty()) {
                 delay(500)
-                exportBookmarksToFile()
+                exportBookmarksToFile(info)
                 return@withContext
             }
             val bookmarkStream = FileOutputStream(bookmarksFile)
             val bookmarkOutWriter = OutputStreamWriter(bookmarkStream)
             Log.log(Log.Priority.ERROR, "bookmarkExport",null,allNodes.size.toString())
+            info?.forEach {
+                if (it != "export") {
+                    bookmarkOutWriter.append(it + "\n\r")
+                }
+            }
             /*allNodes.forEach {
                 if (it.type == BookmarkNodeType.ITEM) {
                     Log.log(Log.Priority.ERROR, "bookmarkExport",null,it.title + ":" + it.url + "\n\r")
@@ -247,9 +252,10 @@ class BookmarkFragment : LibraryPageFragment<BookmarkNode>(), UserInteractionHan
 
         // Reload bookmarks when returning to this fragment in case they have been edited
         val args by navArgs<BookmarkFragmentArgs>()
-        if (args.currentRoot.equals("export")) {
+        if (args.currentRoot.contains("export")) {
+            val info = args.currentRoot.split("|")
             CoroutineScope(IO).launch{
-                async { exportBookmarksToFile() }.await()
+                async { exportBookmarksToFile(info) }.await()
             }
             showSnackBarWithText(resources.getString(R.string.bookmarks_exported))
             val currentGuid = BookmarkRoot.Mobile.id

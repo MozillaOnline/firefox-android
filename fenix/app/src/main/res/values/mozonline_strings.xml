@@ -45,7 +45,7 @@
     <string name="browser_menu_manage_account_and_devices">Manage Account and Devices</string>
 
     <string name="preferences_report">Report</string>
-    <string name="preferences_export_bookmarks">Export Bookmarks</string>
-    <string name="bookmarks_exported">Bookmarks Exported</string>
-    <string name="bookmarks_cannot_export">Bookmarks cannot be exported due to lack of permissions</string>
+    <string name="preferences_export_bookmarks">Export</string>
+    <string name="bookmarks_exported">Exported</string>
+    <string name="bookmarks_cannot_export">Cannot export due to lack of permissions</string>
 </resources>

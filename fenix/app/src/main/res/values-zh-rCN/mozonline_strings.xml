@@ -46,8 +46,8 @@
     <string name="browser_menu_manage_account_and_devices">管理账户和设备</string>
 
     <string name="preferences_report">用户权益投诉举报</string>
-    <string name="preferences_export_bookmarks">导出书签</string>
-    <string name="bookmarks_exported">书签已导出</string>
-    <string name="bookmarks_cannot_export">缺少权限，书签无法导出</string>
+    <string name="preferences_export_bookmarks">导出个人信息</string>
+    <string name="bookmarks_exported">已导出</string>
+    <string name="bookmarks_cannot_export">缺少权限，无法导出</string>
 </resources>
 
