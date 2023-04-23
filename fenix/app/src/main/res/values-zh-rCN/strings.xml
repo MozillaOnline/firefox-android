@@ -379,7 +379,7 @@
     <!-- Preference category for privacy and security settings -->
     <string name="preferences_category_privacy_security">隐私与安全</string>
     <!-- Preference for advanced site permissions -->
-    <string name="preferences_site_permissions">网站权限</string>
+    <string name="preferences_site_permissions">网站权限管理</string>
     <!-- Preference for private browsing options -->
     <string name="preferences_private_browsing_options">隐私浏览</string>
     <!-- Preference for opening links in a private tab-->
@@ -519,7 +519,7 @@
     <!-- Preference for data choices -->
     <string name="preferences_data_choices">数据反馈</string>
     <!-- Preference for data collection -->
-    <string name="preferences_data_collection">数据收集</string>
+    <string name="preferences_data_collection">改善用户体验</string>
     <!-- Preference for developers -->
     <string name="preferences_remote_debugging">通过 USB 远程调试</string>
     <!-- Preference title for switch preference to show search engines -->
@@ -1126,7 +1126,7 @@
     <!-- Preference for altering the EME access for all websites -->
     <string name="preference_phone_feature_media_key_system_access">受 DRM 控制的内容</string>
     <!-- Label that indicates that a permission must be asked always -->
-    <string name="preference_option_phone_feature_ask_to_allow">始终询问</string>
+    <string name="preference_option_phone_feature_ask_to_allow">每次都问我</string>
     <!-- Label that indicates that a permission must be blocked -->
     <string name="preference_option_phone_feature_blocked">阻止</string>
     <!-- Label that indicates that a permission must be allowed -->
@@ -1134,7 +1134,7 @@
     <!--Label that indicates a permission is by the Android OS-->
     <string name="phone_feature_blocked_by_android">被 Android 阻止</string>
     <!-- Preference for showing a list of websites that the default configurations won't apply to them -->
-    <string name="preference_exceptions">例外</string>
+    <string name="preference_exceptions">例外网站</string>
     <!-- Summary of tracking protection preference if tracking protection is set to on -->
     <string name="tracking_protection_on" moz:removedIn="111" tools:ignore="UnusedResources">开启</string>
     <!-- Summary of tracking protection preference if tracking protection is set to off -->
