@@ -10,6 +10,7 @@ import androidx.preference.Preference
 import androidx.preference.Preference.OnPreferenceClickListener
 import androidx.preference.PreferenceFragmentCompat
 import mozilla.components.service.glean.private.NoExtras
+import org.mozilla.fenix.Config
 import org.mozilla.fenix.GleanMetrics.Autoplay
 import org.mozilla.fenix.R
 import org.mozilla.fenix.ext.getPreferenceKey
@@ -23,6 +24,11 @@ class SitePermissionsFragment : PreferenceFragmentCompat() {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.site_permissions_preferences, rootKey)
+
+        val preferenceDescription = requirePreference<Preference>(R.string.pref_key_site_permissions_description)
+        if (!Config.channel.isMozillaOnline) {
+            preferenceDescription.isVisible = false
+        }
     }
 
     override fun onResume() {

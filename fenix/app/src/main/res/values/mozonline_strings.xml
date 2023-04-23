@@ -48,4 +48,6 @@
     <string name="preferences_export_bookmarks">Export</string>
     <string name="bookmarks_exported">Exported</string>
     <string name="bookmarks_cannot_export">Cannot export due to lack of permissions</string>
+
+    <string name="preferences_site_permissions_description">This page shows the default permission settings to all sites; If the permissions of any specific site have been modified, this site will be shown in "Exceptions".</string>
 </resources>
