@@ -47,4 +47,6 @@
     <string name="preferences_report">Report</string>
 
     <string name="preferences_site_permissions_description">This page shows the default permission settings to all sites; If the permissions of any specific site have been modified, this site will be shown in "Exceptions".</string>
+
+    <string name="preferences_export_account_info">Export Account Info</string>
 </resources>
