@@ -86,6 +86,13 @@
             android:key="@string/pref_key_make_default_browser"
             app:iconSpaceReserved="false"
             android:title="@string/preferences_set_as_default_browser" />
+
+        <androidx.preference.SwitchPreference
+            android:defaultValue="true"
+            android:key="@string/pref_key_promotion"
+            app:iconSpaceReserved="false"
+            android:title="@string/preferences_allow_promotion"
+            app:isPreferenceVisible="false"/>
     </androidx.preference.PreferenceCategory>
 
     <androidx.preference.PreferenceCategory

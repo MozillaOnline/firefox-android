@@ -439,6 +439,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val preferenceRemoteDebugging = findPreference<Preference>(debuggingKey)
         val preferenceMakeDefaultBrowser =
             requirePreference<DefaultBrowserPreference>(R.string.pref_key_make_default_browser)
+        val preferencePromotion =
+            findPreference<Preference>(getPreferenceKey(R.string.pref_key_promotion))
 
         if (!Config.channel.isReleased) {
             preferenceLeakCanary?.setOnPreferenceChangeListener { _, newValue ->
@@ -446,6 +448,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
                 context?.application?.updateLeakCanaryState(isEnabled)
                 true
             }
+        }
+
+        if (Config.channel.isMozillaOnline) {
+            preferencePromotion?.isVisible = true
         }
 
         preferenceRemoteDebugging?.isVisible = Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
@@ -456,6 +462,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
             true
         }
 
+        preferencePromotion?.onPreferenceChangeListener = SharedPreferenceUpdater()
+        
         preferenceMakeDefaultBrowser.apply {
             updateSwitch()
             onPreferenceClickListener =

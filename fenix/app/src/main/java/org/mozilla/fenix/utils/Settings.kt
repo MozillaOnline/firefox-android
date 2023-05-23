@@ -640,6 +640,11 @@ class Settings(private val appContext: Context) : PreferencesHolder {
         return isDefaultBrowserNow && !wasDefaultBrowserOnLastResume
     }
 
+    var allowPromotion by booleanPreference(
+        appContext.getPreferenceKey(R.string.pref_key_promotion),
+        default = true
+    )
+
     /**
      * This function is "blocking" since calling this can take approx. 30-40ms (timing taken on a
      * G5+).
