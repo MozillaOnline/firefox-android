@@ -65,6 +65,7 @@ import org.mozilla.fenix.Config
 import org.mozilla.fenix.GleanMetrics.HomeScreen
 import org.mozilla.fenix.GleanMetrics.PrivateBrowsingShortcutCfr
 import org.mozilla.fenix.HomeActivity
+import org.mozilla.fenix.TrackingChina
 import org.mozilla.fenix.R
 import org.mozilla.fenix.addons.showSnackBar
 import org.mozilla.fenix.browser.browsingmode.BrowsingMode
@@ -644,8 +645,10 @@ class HomeFragment : Fragment() {
                         findNavController().navigate(
                             HomeFragmentDirections.actionGlobalBrowser(null)
                         )
+                        TrackingChina.sendTrackingChina("snackbar", "click", requireContext())
                     }
                     .show()
+                TrackingChina.sendTrackingChina("snackbar", "show", requireContext())
             }
         }
 

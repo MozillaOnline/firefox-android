@@ -7,6 +7,7 @@ package org.mozilla.fenix.settings
 import androidx.core.content.edit
 import androidx.preference.Preference
 import org.mozilla.fenix.ext.settings
+import org.mozilla.fenix.TrackingChina
 
 /**
  * Updates the corresponding [android.content.SharedPreferences] when the boolean [Preference] is changed.
@@ -18,6 +19,9 @@ open class SharedPreferenceUpdater : Preference.OnPreferenceChangeListener {
         val newBooleanValue = newValue as? Boolean ?: return false
         preference.context.settings().preferences.edit {
             putBoolean(preference.key, newBooleanValue)
+        }
+        if (preference.key == "pref_key_promotion" && !newBooleanValue) {
+            TrackingChina.sendTrackingChina("snackbar", "close", preference.context)
         }
         return true
     }
