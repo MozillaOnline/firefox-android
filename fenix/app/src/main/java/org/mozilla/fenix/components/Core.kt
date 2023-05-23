@@ -485,6 +485,13 @@ class Core(
                             SupportUtils.MEITUAN_URL,
                         ),
                     )
+
+                    defaultTopSites.add(
+                        Pair(
+                            context.getString(R.string.default_top_site_tm),
+                            SupportUtils.TM_URL
+                        )
+                    )
                 } else {
                     defaultTopSites.add(
                         Pair(
@@ -512,6 +519,14 @@ class Core(
 
                 context.settings().defaultTopSitesAdded = true
             }
+        }
+
+        if (!SupportUtils.isShoppingFesForTM && defaultTopSites.contains(
+                Pair(context.getString(R.string.default_top_site_tm), SupportUtils.TM_URL)
+            )) {
+            defaultTopSites.remove(
+                Pair(context.getString(R.string.default_top_site_tm), SupportUtils.TM_URL)
+            )
         }
 
         DefaultTopSitesStorage(

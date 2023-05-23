@@ -19,6 +19,9 @@ import org.mozilla.fenix.settings.account.AuthIntentReceiverActivity
 import java.io.UnsupportedEncodingException
 import java.net.URLEncoder
 import java.util.Locale
+import java.text.SimpleDateFormat
+import java.util.Date
+import android.annotation.SuppressLint
 
 object SupportUtils {
     const val RATE_APP_URL = "market://details?id=" + BuildConfig.APPLICATION_ID
@@ -31,13 +34,43 @@ object SupportUtils {
         "?e=&p=AyIGZRprFDJWWA1FBCVbV0IUWVALHFRBEwQAQB1AWQkFVUVXfFkAF14lRFRbJXstVWR3WQ1rJ08AZnhS" +
         "HDJBYh4LZR9eEAMUBlccWCUBEQZRGFoXCxc3ZRteJUl8BmUZWhQ" +
         "AEwdRGF0cMhIAVB5ZFAETBVAaXRwyFQdcKydLSUpaCEtYFAIXN2UrWCUyIgdVK1slXVZaCCtZFAMWDg%3D%3D"
+    const val JD_FES_URL = "https://u.jd.com/OQj9jJd"
     const val PDD_URL = "https://mobile.yangkeduo.com/duo_cms_mall.html?pid=13289095_194240604&" +
         "cpsSign=CM_210309_13289095_194240604_8bcfd56d5db3c43d983014d2658ec26e&duoduo_type=2"
     const val TC_URL = "https://jumpluna.58.com/i/29HU"
     const val MEITUAN_URL = "https://tb.j5k6.com/6ZSOp"
+    const val TM_URL = "https://www.tmall.com"
+    const val TM_FES_URL = "https://s.click.taobao.com/RhYONGu"
     const val GOOGLE_US_URL = "https://www.google.com/webhp?client=firefox-b-1-m&channel=ts"
     const val GOOGLE_XX_URL = "https://www.google.com/webhp?client=firefox-b-m&channel=ts"
     const val WHATS_NEW_URL = "https://www.mozilla.org/firefox/android/notes"
+
+    data class ShoppingFes(
+        val website: String,
+        val shoppingFesName: String = "",
+        val icon: Int,
+        val url: String = "",
+        val startDate: String = "", // Format in "dd/MM/yyyy".
+        val endDate: String = "" // Format in "dd/MM/yyyy".
+    )
+
+    // Initialize these two value with fresh params for every shopping fes.
+    val shoppingFesJD = ShoppingFes("JD","618", R.drawable.ic_jd_618, JD_FES_URL, "29/05/2023 12:00", "21/06/2023 00:00")
+    val shoppingFesTM = ShoppingFes("TM","618", R.drawable.ic_tm_618, TM_FES_URL, "29/05/2023 12:00", "21/06/2023 00:00")
+
+    @SuppressLint("SimpleDateFormat")
+    val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm")
+    val currentDate: String = sdf.format(Date())
+    val isShoppingFesForJD = currentDate.isNotEmpty() &&
+            shoppingFesJD.endDate.isNotEmpty() &&
+            shoppingFesJD.startDate.isNotEmpty() &&
+            sdf.parse(currentDate)!!.before(sdf.parse(shoppingFesJD.endDate)) &&
+            sdf.parse(currentDate)!!.after(sdf.parse(shoppingFesJD.startDate))
+    val isShoppingFesForTM = currentDate.isNotEmpty() &&
+            shoppingFesTM.endDate.isNotEmpty() &&
+            shoppingFesTM.startDate.isNotEmpty() &&
+            sdf.parse(currentDate)!!.before(sdf.parse(shoppingFesTM.endDate)) &&
+            sdf.parse(currentDate)!!.after(sdf.parse(shoppingFesTM.startDate))
 
     enum class SumoTopic(internal val topicStr: String) {
         HELP("faq-android"),

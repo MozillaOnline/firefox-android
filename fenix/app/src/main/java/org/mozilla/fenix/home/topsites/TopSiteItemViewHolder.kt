@@ -166,7 +166,21 @@ class TopSiteItemViewHolder(
                     binding.faviconImage.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_baidu))
                 }
                 SupportUtils.JD_URL -> {
-                    binding.faviconImage.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_jd))
+                    if (SupportUtils.isShoppingFesForJD) {
+                        binding.faviconImage.setImageDrawable(
+                            getDrawable(
+                                itemView.context,
+                                SupportUtils.shoppingFesJD.icon
+                            )
+                        )
+                    } else {
+                        binding.faviconImage.setImageDrawable(
+                            getDrawable(
+                                itemView.context,
+                                R.drawable.ic_jd
+                            )
+                        )
+                    }
                 }
                 SupportUtils.PDD_URL -> {
                     binding.faviconImage.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_pdd))
@@ -176,6 +190,23 @@ class TopSiteItemViewHolder(
                 }
                 SupportUtils.MEITUAN_URL -> {
                     binding.faviconImage.setImageDrawable(getDrawable(itemView.context, R.drawable.ic_meituan))
+                }
+                SupportUtils.TM_URL -> {
+                    if (SupportUtils.isShoppingFesForTM) {
+                        binding.faviconImage.setImageDrawable(
+                            getDrawable(
+                                itemView.context,
+                                SupportUtils.shoppingFesTM.icon
+                            )
+                        )
+                    } else {
+                        binding.faviconImage.setImageDrawable(
+                            getDrawable(
+                                itemView.context,
+                                R.drawable.ic_tm
+                            )
+                        )
+                    }
                 }
                 else -> {
                     itemView.context.components.core.icons.loadIntoView(binding.faviconImage, topSite.url)

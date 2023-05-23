@@ -31,6 +31,8 @@
     <string name="default_top_site_tc">58</string>
     <!-- Default title for pinned meituan top site that links to 58 home page  -->
     <string name="default_top_site_meituan">meituan</string>
+    <!-- Default title for pinned tmall top site that links to tmall home page  -->
+    <string name="default_top_site_tm">Tmall</string>
 
     <!-- Preference for settings related to promotion -->
     <string name="preferences_allow_promotion">Allow promotion</string>

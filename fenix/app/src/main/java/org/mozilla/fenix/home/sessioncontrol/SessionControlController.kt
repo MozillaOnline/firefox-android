@@ -336,6 +336,7 @@ class DefaultSessionControlController(
         Collections.renameButton.record(NoExtras())
     }
 
+    @Suppress("ComplexMethod")
     override fun handleSelectTopSite(topSite: TopSite, position: Int) {
         TopSites.openInNewTab.record(NoExtras())
 
@@ -367,8 +368,18 @@ class DefaultSessionControlController(
             )
         }
 
+        var specialUrl = topSite.url
+        if (SupportUtils.isShoppingFesForJD && topSite.url == SupportUtils.JD_URL &&
+            SupportUtils.shoppingFesJD.url.isNotEmpty()) {
+            specialUrl = SupportUtils.shoppingFesJD.url
+        }
+        if (SupportUtils.isShoppingFesForTM && topSite.url == SupportUtils.TM_URL &&
+            SupportUtils.shoppingFesTM.url.isNotEmpty()) {
+            specialUrl = SupportUtils.shoppingFesTM.url
+        }
+
         val tabId = addTabUseCase.invoke(
-            url = appendSearchAttributionToUrlIfNeeded(topSite.url),
+            url = appendSearchAttributionToUrlIfNeeded(specialUrl),
             selectTab = true,
             startLoading = true,
         )
