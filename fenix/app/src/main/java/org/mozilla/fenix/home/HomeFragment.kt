@@ -61,6 +61,7 @@ import mozilla.components.lib.state.ext.consumeFrom
 import mozilla.components.service.glean.private.NoExtras
 import mozilla.components.support.base.feature.ViewBoundFeatureWrapper
 import mozilla.components.support.ktx.kotlinx.coroutines.flow.ifChanged
+import org.mozilla.fenix.Config
 import org.mozilla.fenix.GleanMetrics.HomeScreen
 import org.mozilla.fenix.GleanMetrics.PrivateBrowsingShortcutCfr
 import org.mozilla.fenix.HomeActivity
@@ -117,6 +118,7 @@ import org.mozilla.fenix.utils.allowUndo
 import org.mozilla.fenix.wallpapers.Wallpaper
 import java.lang.ref.WeakReference
 import kotlin.math.min
+import java.util.Random
 
 @Suppress("TooManyFunctions", "LargeClass")
 class HomeFragment : Fragment() {
@@ -622,6 +624,30 @@ class HomeFragment : Fragment() {
             owner = viewLifecycleOwner,
             view = view,
         )
+
+        val promotionJsonArray = (activity as HomeActivity).promotionJsonArray
+        if (promotionJsonArray.length()>0) {
+            var randomIndex = Random().nextInt(promotionJsonArray.length())
+            var title = promotionJsonArray.getJSONObject(randomIndex).getString("title")
+            var link = promotionJsonArray.getJSONObject(randomIndex).getString("url")
+
+            if (Config.channel.isMozillaOnline && requireComponents.settings.allowPromotion) {
+                FenixSnackbar.make(
+                    view = view,
+                    duration = Snackbar.LENGTH_LONG,
+                    isDisplayedWithBrowserToolbar = false
+                )
+                    .setText(title)
+                    .setAnchorView(snackbarAnchorView)
+                    .setAction("go") {
+                        requireComponents.useCases.tabsUseCases.addTab(link)
+                        findNavController().navigate(
+                            HomeFragmentDirections.actionGlobalBrowser(null)
+                        )
+                    }
+                    .show()
+            }
+        }
 
         // DO NOT MOVE ANYTHING BELOW THIS addMarker CALL!
         requireComponents.core.engine.profiler?.addMarker(

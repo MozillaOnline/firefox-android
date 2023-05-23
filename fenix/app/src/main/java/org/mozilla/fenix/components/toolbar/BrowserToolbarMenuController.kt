@@ -355,7 +355,7 @@ class DefaultBrowserToolbarMenuController(
             }
             is ToolbarMenu.Item.NewTab -> {
                 navController.navigate(
-                    BrowserFragmentDirections.actionGlobalHome(focusOnAddressBar = true),
+                    BrowserFragmentDirections.actionGlobalHome(focusOnAddressBar = false),
                 )
             }
             is ToolbarMenu.Item.SetDefaultBrowser -> {

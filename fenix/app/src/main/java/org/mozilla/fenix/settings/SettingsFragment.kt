@@ -463,7 +463,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
 
         preferencePromotion?.onPreferenceChangeListener = SharedPreferenceUpdater()
-        
+
         preferenceMakeDefaultBrowser.apply {
             updateSwitch()
             onPreferenceClickListener =

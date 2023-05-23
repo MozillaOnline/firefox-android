@@ -154,6 +154,15 @@ import org.mozilla.fenix.utils.BrowsersCache
 import org.mozilla.fenix.utils.Settings
 import java.lang.ref.WeakReference
 import java.util.Locale
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
+import com.android.volley.Request
+import com.android.volley.RequestQueue
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
+import android.widget.Toast
+import android.util.Log
 
 /**
  * The main activity of the application. The application is primarily a single Activity (this one)
@@ -168,6 +177,8 @@ open class HomeActivity : LocaleAwareAppCompatActivity(), NavHostActivity {
     // inside AppStartupTelemetry since that class lives inside components and
     // components requires context to access.
     protected val homeActivityInitTimeStampNanoSeconds = SystemClock.elapsedRealtimeNanos()
+
+    var promotionJsonArray: JSONArray = JSONArray()
 
     private lateinit var binding: ActivityHomeBinding
     lateinit var themeManager: ThemeManager
@@ -223,6 +234,8 @@ open class HomeActivity : LocaleAwareAppCompatActivity(), NavHostActivity {
     final override fun onCreate(savedInstanceState: Bundle?) {
         // DO NOT MOVE ANYTHING ABOVE THIS getProfilerTime CALL.
         val startTimeProfiler = components.core.engine.profiler?.getProfilerTime()
+
+        initializePromotion()
 
         components.strictMode.attachListenerToDisablePenaltyDeath(supportFragmentManager)
         MarkersFragmentLifecycleCallbacks.register(supportFragmentManager, components.core.engine)
@@ -407,6 +420,29 @@ open class HomeActivity : LocaleAwareAppCompatActivity(), NavHostActivity {
                 ensureMarketingChannelExists(applicationContext)
             }
         }
+    }
+
+    private fun initializePromotion(){
+        val promotionApiUrl = "https://api2.firefoxchina.cn/2019.11.11/fenix_feed.json"
+        val promotionRequest = StringRequest(
+            Request.Method.GET, promotionApiUrl,
+            { response ->
+                try {
+                    //Create a JSON object containing information from the API.
+                    val promotionJsonObject = JSONObject(response.toString()).getJSONObject("data")
+                    promotionJsonArray = promotionJsonObject.getJSONArray("data")
+                    Log.e("promotionJsonObject", promotionJsonObject.toString())
+                    Log.e("promotionJsonArray", promotionJsonArray.toString())
+                } catch (e: JSONException) {
+                    e.printStackTrace()
+                }
+            }
+        ) { _ ->
+            //Toast.makeText(this, volleyError.message, Toast.LENGTH_SHORT).show()
+        }
+        val requestQueue: RequestQueue = Volley.newRequestQueue(this)
+        requestQueue.add(promotionRequest)
+
     }
 
     private fun checkAndExitPiP() {

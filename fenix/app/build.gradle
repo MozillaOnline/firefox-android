@@ -480,6 +480,8 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 }
 
 dependencies {
+    implementation("com.android.volley:volley:1.2.1")
+
     implementation project(':browser-engine-gecko')
 
     implementation FenixDependencies.kotlin_coroutines

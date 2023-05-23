@@ -219,7 +219,7 @@ class DefaultTabsTrayController(
         val startTime = profiler?.getProfilerTime()
         browsingModeManager.mode = BrowsingMode.fromBoolean(isPrivate)
         navController.navigate(
-            TabsTrayFragmentDirections.actionGlobalHome(focusOnAddressBar = true),
+            TabsTrayFragmentDirections.actionGlobalHome(focusOnAddressBar = false),
         )
         navigationInteractor.onTabTrayDismissed()
         profiler?.addMarker(
